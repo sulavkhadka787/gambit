@@ -1,0 +1,9 @@
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+.topBar {
+  width: 100vw;
+  position: fixed;
+}
