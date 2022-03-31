@@ -7,10 +7,10 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   function validateFormFields() {
-    return true;
+    return username.length >= 5 && password.length >= 8;
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
   }
   return (

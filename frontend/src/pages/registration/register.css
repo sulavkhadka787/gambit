@@ -1,6 +1,6 @@
-.appLogin {
+.appRegister {
   background: white;
-  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 10);
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 10);
   width: fit-content;
   height: fit-content;
   margin: 0;
@@ -16,8 +16,4 @@
 
 .appLogin > h1 {
   padding-bottom: 5px;
-}
-
-.button {
-  padding: 50px !important;
 }
