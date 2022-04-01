@@ -4,13 +4,13 @@ import Login from "./login/login";
 import Register from "./registration/register";
 import Home from "./home/home";
 
-const NavSwitch = () => {
+const NavSwitch = (props) => {
   return (
     <div className="navSwitch">
       <Router>
         <Switch>
           <Route path="/login">
-            <Login />
+            <Login onLogin={props.onLogin} />
           </Route>
           <Route path="/register">
             <Register />
