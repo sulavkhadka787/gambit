@@ -4,7 +4,7 @@ import Login from "./login/login";
 import Register from "./registration/register";
 import Home from "./home/home";
 
-const NavSwitch = (props) => {
+const NavRouter = (props) => {
   return (
     <div className="navSwitch">
       <Router>
@@ -24,4 +24,4 @@ const NavSwitch = (props) => {
   );
 };
 
-export default NavSwitch;
+export default NavRouter;
