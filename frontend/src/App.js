@@ -31,20 +31,49 @@ function App() {
     return () => {};
   }, [cookie]);
 
+  function appLogin(username, password) {
+    axios
+      .post("/auth/login", {
+        username: username,
+        password: password,
+      })
+      .then(function (res) {
+        const token = res.data.token;
+        setUser({
+          username: res.data.user.username,
+          balance: res.data.user.balance,
+        });
+        setAuthCookie(token);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+
   function appLogout() {
-    removeCookie("token");
-    setUsername("");
-    setBalance(0);
-    console.log("APP-JS-APP-LOGOUT():=>", cookies);
+    removeCookie("AUTH-TOKEN");
+  }
+
+  function setAuthCookie(token) {
+    if (token.length > 0) {
+      setCookie("AUTH-TOKEN", token, { maxAge: 3600 });
+      setAuthToken(token);
+    } else {
+      removeCookie("AUTH-TOKEN");
+      setAuthToken("");
+    }
   }
 
   return (
     <div className="app">
-      <div className="topBar">
-        xxxx
-        <TopBar onLogout={appLogout} privateKey={privateKey} />
-      </div>
-      <NavSwitch onLogin={appLogin} username={username} balance={balance} />
+      <UserContext.Provider value={{ user, setUser }}>
+        <AuthContext.Provider value={{ authToken, setAuthCookie }}>
+          <div className="topBar">
+            <TopBar onLogout={appLogout} />
+          </div>
+          <NavRouter onLogin={appLogin} />
+        </AuthContext.Provider>
+      </UserContext.Provider>
     </div>
   );
 }
