@@ -8,8 +8,9 @@ import {
   FormLabel,
 } from "react-bootstrap";
 import "./register.css";
-import bcrypt from "bcryptjs";
 import { useHistory } from "react-router-dom";
+import { useUser } from "../contexts/user-context";
+import { useAuth } from "../contexts/auth-context";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -17,44 +18,37 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [alertUsername, setAlertUsername] = useState("");
   const [alertPassword, setAlertPassword] = useState("");
-  const [usernames, setUsernames] = useState([]);
-  const saltRounds = 10;
+
   const history = useHistory();
+  const { setUser } = useUser();
+  const { setAuthCookie } = useAuth();
 
   useEffect(() => {
-    async function fetchData() {
-      const req = await axios.get("/users");
-      const usernameSet = new Set();
-      req.data.forEach((item) => {
-        usernameSet.add(item.username);
-      });
-      setUsernames(usernameSet);
-    }
-    fetchData();
+    setAlertUsername("");
     return () => {};
   }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const salt = bcrypt.genSaltSync(saltRounds);
-    await axios.post("/users", {
-      username: username,
-      password: bcrypt.hashSync(password, salt),
-    });
-    history.push("/login");
+    await axios
+      .post("/auth/register", {
+        username: username,
+        password: password,
+      })
+      .then(function (res) {
+        const token = res.data.token;
+        setAuthCookie(token);
+        setUser(res.data.user);
+        history.push("/home");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleUsernameChange(event) {
     const currentUsername = event.target.value;
     setUsername(currentUsername);
-    if (currentUsername.length < 5) {
-      setAlertUsername("Username is too short");
-    } else {
-      setAlertUsername("");
-      if (username.has(currentUsername)) {
-        setAlertUsername("Username already exists");
-      }
-    }
   }
 
   function handlePasswordChange(event) {

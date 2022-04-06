@@ -1,44 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import "./login.css";
-import axios from "../../services/axios.js";
 import { Alert } from "react-bootstrap";
-import bcrypt from "bcryptjs";
 import { useHistory } from "react-router-dom";
+import { useUser } from "../contexts/user-context";
+import validUser from "../validUser";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [users, setUsers] = useState({});
   const [loginAlert, setLoginAlert] = useState("");
   const history = useHistory();
-
-  useEffect(() => {
-    async function fetchData() {
-      const req = await axios.get("/users");
-      const hashMap = req.data.reduce(function (map, obj) {
-        map[obj.username] = obj;
-        return map;
-      }, {});
-      setUsers(hashMap);
-    }
-    fetchData();
-    return () => {};
-  }, []);
+  const { user } = useUser();
 
   function validateFormFields() {
     return username.length >= 5 && password.length >= 8;
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    setPassword("");
-    if (users.hasOwnProperty(username)) {
-      if (bcrypt.compareSync(password, users[username]["password"])) {
-        props.onLogin(username, users[username]["balance"]);
-        history.push("/home");
-      }
+  useEffect(() => {
+    if (validUser(user)) {
+      setLoginAlert("");
+      history.push("/home");
     }
+    return () => {};
+  }, [user, history]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setPassword("");
+    props.onLogin(username, password);
     setLoginAlert("Incorrect username or password");
   }
   return (
