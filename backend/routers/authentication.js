@@ -1,11 +1,10 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
-import validateCookies from "../middleware/validateCookie";
-import User from "../schemas/User.js";
+import User from "../schemas/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import verifyToken from "../middleware/verifyToken";
+import verifyToken from "../middleware/verifyToken.js";
 
 dotenv.config();
 

@@ -29,3 +29,5 @@ function LoginLogout(props) {
     </div>
   );
 }
+
+export default LoginLogout;

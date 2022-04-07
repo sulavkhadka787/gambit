@@ -1,11 +1,11 @@
 import express from "express";
 import mongoose from "mongoose";
-import User from "./schemas/user";
+import User from "./schemas/user.js";
 import Cors from "cors";
 import dotenv from "dotenv";
 import authenticationRouter from "./routers/authentication.js";
 import cookieParser from "cookie-parser";
-import errorHandler from "./middleware/errorHandler";
+import errorHandler from "./middleware/errorHandler.js";
 
 dotenv.config();
 const app = express();

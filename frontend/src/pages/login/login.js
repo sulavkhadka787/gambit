@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { useUser } from "../contexts/user-context";
 import validUser from "../validUser";
 
-const Login = () => {
+const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginAlert, setLoginAlert] = useState("");
