@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Button } from "@material-ui/core";
-import { useAuth } from "../pages/contexts/auth-context";
-import validUser from "../pages/validUser";
+import { useAuth } from "../../pages/contexts/auth-context";
+import validUser from "../../pages/validUser";
+import { useDetectOutsideClick } from "../../helpers/useDetectOutsideClick";
+import { useUser } from "../../pages/contexts/user-context";
+import "./LoginLogout.css";
 
 function LoginLogout(props) {
   const user = props.user;
   const { setAuthCookie } = useAuth();
+  const dropdownRef = useRef(null);
+  const [show, setShow] = useDetectOutsideClick(dropdownRef, false);
 
   function appLogout(e) {
     e.preventDefault();
