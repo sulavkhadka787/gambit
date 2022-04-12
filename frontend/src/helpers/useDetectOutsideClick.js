@@ -11,6 +11,7 @@ export const useDetectOutsideClick = (el, initialState) => {
   useEffect(() => {
     const onClick = (e) => {
       //if the active element exists and is clicked outside of
+      //console.log("E.TARGET", el.current);
       if (el.current !== null && !el.current.contains(e.target)) {
         setIsActive(!isActive);
       }

@@ -25,12 +25,27 @@ function LoginLogout(props) {
     );
   }
   return (
-    <div>
-      <Button href="/home" color="inherit" onClick={appLogout}>
-        Logout
-      </Button>
-      <h2>{user.username}</h2>
-      <h4>{user.balance}</h4>
+    <div className="menu-container">
+      <button onClick={() => setShow(!show)} className="menu-trigger">
+        <span>{user.username}</span>
+      </button>
+      <nav ref={dropdownRef} className={`menu ${show ? "active" : "inactive"}`}>
+        <ul>
+          <li>
+            <p>
+              <b>Balance:{user.balance}</b>
+            </p>
+          </li>
+          <li>
+            <a href="/">Profile</a>
+          </li>
+          <li>
+            <a onClick={appLogout} href="/">
+              Logout
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }

@@ -11,20 +11,21 @@ import "./register.css";
 import { useHistory } from "react-router-dom";
 import { useUser } from "../contexts/user-context";
 import { useAuth } from "../contexts/auth-context";
+import validUser from "../validUser";
 
-const Register = () => {
+const Registration = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [alertUsername, setAlertUsername] = useState("");
-  const [alertPassword, setAlertPassword] = useState("");
 
   const history = useHistory();
-  const { setUser } = useUser();
+  const { user, setUser } = useUser();
   const { setAuthCookie } = useAuth();
 
   useEffect(() => {
-    setAlertUsername("");
+    if (validUser(user)) {
+      history.push("/home");
+    }
     return () => {};
   }, []);
 
@@ -46,41 +47,11 @@ const Register = () => {
       });
   }
 
-  function handleUsernameChange(event) {
-    const currentUsername = event.target.value;
-    setUsername(currentUsername);
-  }
-
-  function handlePasswordChange(event) {
-    const currentPassword = event.target.value;
-    setPassword(currentPassword);
-    if (currentPassword.length < 8) {
-      setAlertPassword("Password is too short. Minimum 8 characters");
-    } else {
-      setAlertPassword("");
-    }
-  }
-
-  function handleConfirmPasswordChange(event) {
-    const currentConfirmPassword = event.target.value;
-    setConfirmPassword(currentConfirmPassword);
-    if (password.length < 8) {
-      return;
-    }
-
-    if (currentConfirmPassword !== password) {
-      setAlertPassword("Password do not match");
-    } else {
-      setAlertPassword("");
-    }
-  }
-
   function validateFields() {
     return (
-      password.length > 0 &&
-      username.length > 0 &&
-      alertPassword.length === 0 &&
-      alertUsername.length === 0
+      password.length >= 8 &&
+      username.length >= 5 &&
+      confirmPassword.length >= 8
     );
   }
 
@@ -88,8 +59,10 @@ const Register = () => {
     <div className="appRegister">
       <h1>Welcome to Gambit!</h1>
       <form onSubmit={handleSubmit}>
-        {alertUsername.length > 0 && (
-          <Alert variant="primary">{alertUsername}</Alert>
+        {username.length < 5 && username.length !== 0 && (
+          <Alert variant="primary">
+            Username is too short.(Minimum 5 characters)
+          </Alert>
         )}
         <FormGroup controlId="username">
           <FormLabel>Username</FormLabel>
@@ -97,25 +70,30 @@ const Register = () => {
             autoFocus
             type="text"
             value={username}
-            onChange={(e) => handleUsernameChange(e)}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </FormGroup>
-        {alertPassword.length > 0 && (
-          <Alert variant="primary">{alertPassword}</Alert>
+        {password.length < 8 && password.length !== 0 && (
+          <Alert variant="primary">
+            Password is too short. (Minimum 8 characters.)
+          </Alert>
         )}
         <FormGroup controlId="password">
           <FormLabel>Password</FormLabel>
           <FormControl
             value={password}
-            onChange={(e) => handlePasswordChange(e)}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
           />
         </FormGroup>
+        {confirmPassword.length !== 0 && confirmPassword !== password && (
+          <Alert variant="primary">Passwords donot match</Alert>
+        )}
         <FormGroup controlId="password">
           <FormLabel>Confirm Password</FormLabel>
           <FormControl
             value={confirmPassword}
-            onChange={(e) => handleConfirmPasswordChange(e)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             type="password"
           />
         </FormGroup>
@@ -127,4 +105,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Registration;
