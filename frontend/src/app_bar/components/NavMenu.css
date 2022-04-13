@@ -1,5 +1,5 @@
 .navig-container {
-  position: relative;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,7 +40,7 @@
   background: #ffffff;
   border-radius: 8px;
   position: absolute;
-  top: 60px;
+  top: 65px;
   left: 0;
   width: 200px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);

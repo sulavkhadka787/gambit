@@ -56,6 +56,7 @@ router.post(
   body("username").isAlphanumeric().isLength({ min: 5 }),
   body("password").isAlphanumeric().isLength({ min: 8 }),
   async (req, res, next) => {
+    console.log("/AUTH/REGISTER-HIT");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       console.log("ERROR.ARRAY()=>", errors);
