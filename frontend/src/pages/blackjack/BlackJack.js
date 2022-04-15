@@ -89,6 +89,7 @@ const BlackJack = () => {
   async function dealCards() {
     setGamestate(Gamestate.USER);
     const updatedUser = await updateBalance(-1 * betAmount);
+    //check user and setuser
     console.log("UPDATED-USER-SETUSER()=>>", updatedUser);
     setUser(updatedUser);
     const pCards = pickCards(2);
