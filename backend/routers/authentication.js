@@ -18,6 +18,7 @@ router.post(
   body("username").isAlphanumeric().isLength({ min: 5 }),
   body("password").isAlphanumeric().isLength({ min: 8 }),
   async (req, res, next) => {
+    console.log("router.post./auth/login hit");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(errors);

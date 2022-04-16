@@ -1,12 +1,12 @@
 import TopBar from "./app_bar/TopBar";
-import NavRouter from "./pages/NavRouter";
+import NavRouter from "./pages/NavSwitch";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { UserContext } from "./pages/contexts/user-context.js";
 import { AuthContext } from "./pages/contexts/auth-context";
-import axios from "axios";
+import axios from "./services/axios";
 
 function App() {
   const [cookie, setCookie, removeCookie] = useCookies(["AUTH-TOKEN"]);
@@ -35,8 +35,9 @@ function App() {
     return () => {};
   }, [cookie]);
 
-  function appLogin(username, password) {
-    axios
+  async function appLogin(username, password) {
+    console.log("app-login");
+    await axios
       .post("/auth/login", {
         username: username,
         password: password,

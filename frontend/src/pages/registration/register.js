@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "../../services/axios";
 import {
   Alert,
@@ -11,7 +11,7 @@ import "./register.css";
 import { useHistory } from "react-router-dom";
 import { useUser } from "../contexts/user-context";
 import { useAuth } from "../contexts/auth-context";
-import validUser from "../validUser";
+import validUser from "../../helpers/validUser";
 
 const Registration = () => {
   const [username, setUsername] = useState("");
@@ -21,13 +21,19 @@ const Registration = () => {
   const history = useHistory();
   const { user, setUser } = useUser();
   const { setAuthCookie } = useAuth();
+  const [usernameAlert, setUsernameAlert] = useState(false);
 
   useEffect(() => {
     if (validUser(user)) {
       history.push("/home");
     }
     return () => {};
-  }, []);
+  }, [user, history]);
+
+  useEffect(() => {
+    setUsernameAlert(false);
+    return () => {};
+  }, [username]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -43,6 +49,9 @@ const Registration = () => {
         history.push("/home");
       })
       .catch((err) => {
+        setUsernameAlert(true);
+        setPassword("");
+        setConfirmPassword("");
         console.log(err);
       });
   }
@@ -51,7 +60,8 @@ const Registration = () => {
     return (
       password.length >= 8 &&
       username.length >= 5 &&
-      confirmPassword.length >= 8
+      confirmPassword.length >= 8 &&
+      password === confirmPassword
     );
   }
 
@@ -63,6 +73,9 @@ const Registration = () => {
           <Alert variant="primary">
             Username is too short.(Minimum 5 characters)
           </Alert>
+        )}
+        {usernameAlert && (
+          <Alert variant="primary">Username is already taken</Alert>
         )}
         <FormGroup controlId="username">
           <FormLabel>Username</FormLabel>

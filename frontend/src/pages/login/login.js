@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import {
+  Button,
+  FormGroup,
+  FormControl,
+  FormLabel,
+  Alert,
+} from "react-bootstrap";
 import "./login.css";
-import { Alert } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useUser } from "../contexts/user-context";
-import validUser from "../validUser";
+import validUser from "../../helpers/validUser";
 
 const Login = (props) => {
   const [username, setUsername] = useState("");
@@ -26,6 +31,7 @@ const Login = (props) => {
   }, [user, history]);
 
   async function handleSubmit(e) {
+    console.log("login-handle-submit");
     e.preventDefault();
     setPassword("");
     props.onLogin(username, password);
