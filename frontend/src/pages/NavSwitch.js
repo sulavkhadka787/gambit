@@ -4,6 +4,7 @@ import Login from "./login/login";
 import Register from "./registration/register";
 import Home from "./home/home";
 import BlackJack from "./blackjack/BlackJack";
+import Roulette from "./roulette/Roulette";
 
 const NavRouter = (props) => {
   return (
@@ -18,6 +19,9 @@ const NavRouter = (props) => {
           </Route>
           <Route path="/blackjack">
             <BlackJack />
+          </Route>
+          <Route path="/roulette">
+            <Roulette />
           </Route>
           <Route path="/">
             <Home />
