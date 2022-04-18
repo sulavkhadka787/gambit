@@ -14,9 +14,10 @@
 }
 
 .table {
-  background: green;
+  background: rgb(1, 95, 1);
   margin: 0;
-  padding: 0;
+  padding: 15px;
+  display: flex;
 }
 
 .circle {
@@ -27,7 +28,10 @@
   width: 462.5px;
   overflow: hidden;
   border: 10px solid #cfb103;
+  pointer-events: none;
   z-index: 1;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .slice {
@@ -41,28 +45,48 @@
   border: none;
 }
 
-.slice:nth-child(even) {
-  background-color: black;
+.green {
+  background-color: green;
 }
 
-.slice:nth-child(odd) {
+.green:hover {
+  background-color: rgb(100, 150, 100);
+}
+
+.red {
   background-color: red;
 }
 
-.slice:nth-child(1) {
-  background-color: green;
+.red:hover {
+  background-color: rgb(255, 117, 117);
+}
+
+.black {
+  background-color: black;
+}
+
+.black:hover {
+  background-color: grey;
 }
 
 .text {
   position: absolute;
-  bottom: 148px;
-  left: 5px;
   padding: 0px;
   color: white;
   left: 30px;
   transform-origin: bottom left;
   transform: skewY(calc(-9.72972972972973deg + 90deg))
     rotate(calc(9.72972972972973deg / 2));
+}
+
+.singleDigit {
+  bottom: 118px;
+  left: 10px;
+}
+
+.multiDigit {
+  bottom: 147px;
+  left: 5px;
 }
 
 .innerCircle {
@@ -81,24 +105,83 @@
   height: 0;
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
-  border-top: 30px solid #dab903;
+  border-top: 30px solid #e6c403;
   transform: translate(215px, 0px);
   z-index: 2;
 }
 
 .spinning {
   animation-duration: 5s;
-  animation-timing-function: cubic-bezier(0.44, -0.205, 0, 1.13);
+  animation-timing-function: cubic-bezier(0.46, -0.16, 0, 1.11);
   animation-name: spinning;
   animation-fill-mode: forwards;
 }
 
-/* @keyframes spinning {
-  from {
-    transform: rotate(0);
-  }
+.controls {
+  display: flex;
+  justify-content: center;
+}
 
-  to {
-    transform: rotate(200deg);
-  }
-} */
+.btn {
+  margin: 5px;
+}
+
+.gambit {
+  position: absolute;
+  color: white;
+  transform: translate(40px, 105px);
+  font-size: 70px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.zero {
+  width: 150px;
+  border: thin white solid;
+  color: white;
+}
+
+.betTable {
+  margin-left: 30px;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+}
+
+.section {
+  display: flex;
+  flex-wrap: wrap;
+  width: 150px;
+  border-bottom: 2px solid white;
+}
+
+.section button {
+  width: 50px;
+  border: thin white solid;
+  color: white;
+}
+
+.betting {
+  display: flex;
+  justify-content: center;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+.extraButtons {
+  display: flex;
+  flex-direction: column;
+}
+
+.extraButtons button {
+  width: 70px;
+  height: 80px;
+  border: white thin solid;
+  color: white;
+}
+
+.betsTable {
+  background-color: white;
+}

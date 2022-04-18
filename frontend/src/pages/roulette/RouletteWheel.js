@@ -1,9 +1,11 @@
 import React from "react";
 import "./Roulette.css";
+import { Button } from "react-bootstrap";
 
 function RouletteWheel(props) {
   const share = props.share;
   const winningIndex = props.winner;
+  const spinning = props.spinning;
 
   let startSpin = `
   @keyframes spinning {
@@ -12,22 +14,48 @@ function RouletteWheel(props) {
   }
   `;
   return (
-    <div className={`circle${props.spinning ? " spinning" : ""}`}>
-      {props.numbers.map((num, index) => (
-        <div
-          key={index}
-          className="slice"
-          style={{
-            transform: `rotate(${index * share - share / 2}deg) skewY(${
-              share - 90
-            }deg)`,
-          }}
-        >
-          <p className="text">{num}</p>
+    <div>
+      <div hidden={!spinning} className="pointer"></div>
+      <div
+        hidden={!spinning}
+        className={`circle${spinning ? " spinning" : ""}`}
+      >
+        {props.numbers.map((n, index) => (
+          <div
+            key={index}
+            className={`slice ${n.color}`}
+            style={{
+              transform: `rotate(${index * share - share / 2}deg) skewY(${
+                share - 90
+              }deg)`,
+            }}
+          >
+            <p
+              className={`text ${
+                n.num % 10 === n.num ? "singleDigit" : "multiDigit"
+              }`}
+            >
+              {n.num}
+            </p>
+          </div>
+        ))}
+        <style children={startSpin} />
+        <div className="innerCircle">
+          <p className="gambit">Gambit</p>
         </div>
-      ))}
-      <style children={startSpin} />
-      <div className="innerCircle"></div>
+      </div>
+      <div className="controls">
+        <Button
+          hidden={winningIndex !== undefined}
+          onClick={props.spin}
+          onAnimationEnd={props.endSpin}
+        >
+          Spin
+        </Button>
+        <Button hidden={winningIndex === undefined} onClick={props.reset}>
+          Reset
+        </Button>
+      </div>
     </div>
   );
 }
