@@ -1,6 +1,5 @@
 import express from "express";
 import mongoose from "mongoose";
-import User from "./schemas/user.js";
 import Cors from "cors";
 import dotenv from "dotenv";
 import authenticationRouter from "./routers/authentication.js";
@@ -30,27 +29,5 @@ mongoose
   .catch((err) => console.log("DB CONNECTION ERR", err));
 
 app.get("/", (req, res) => res.status(200).send("Connection Verified"));
-
-app.post("/users", (req, res) => {
-  const user = req.body;
-  console.log(req.cookies);
-  User.create(user, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(201).send(data);
-    }
-  });
-});
-
-app.get("/users", (req, res) => {
-  User.find((err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(200).send(data);
-    }
-  });
-});
 
 app.listen(port, () => console.log(`Server is running on the port ${port}`));

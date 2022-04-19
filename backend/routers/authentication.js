@@ -18,37 +18,39 @@ router.post(
   body("username").isAlphanumeric().isLength({ min: 5 }),
   body("password").isAlphanumeric().isLength({ min: 8 }),
   async (req, res, next) => {
-    console.log("router.post./auth/login hit");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(errors);
     }
     const username = req.body.username;
     const password = req.body.password;
-
     const currentUser = await User.findOne({
       username: username,
-    });
-
-    if (!currentUser) {
-      return next("Email or password is incorrect");
-    }
-
-    const compPass = await bcrypt.compare(password, currentUser.password);
-    if (!compPass) {
-      return next("Email or password is incorrect");
-    }
-
-    const token = jwt.sign({ id: currentUser._id }, PRIVATE_KEY, {
-      expiresIn: TOKEN_EXPIRY,
-    });
-    currentUser.password = "";
-
-    res.status(200).json({
-      token,
-      user: { username: currentUser.username, balance: currentUser.balance },
-    });
-    next();
+    })
+      .then((data) => {
+        if (!data) {
+          return next("Email or password is incorrect.");
+        }
+        const compPass = bcrypt.compare(password, data.password);
+        if (!compPass) {
+          return next("Email or password is incorrect.");
+        }
+        const token = jwt.sign({ id: data._id }, PRIVATE_KEY, {
+          expiresIn: TOKEN_EXPIRY,
+        });
+        data.password = "";
+        res.status(200).json({
+          token,
+          user: {
+            username: data.username,
+            balance: data.balance,
+          },
+        });
+        next();
+      })
+      .catch((err) => {
+        next(err);
+      });
   }
 );
 
@@ -99,15 +101,17 @@ router.post(
 
 router.get("/user", verifyToken, async (req, res, next) => {
   const id_ = req.auth.id;
-  try {
-    const currentUser = await User.findById(id_);
-    res.json({
-      username: currentUser.username,
-      balance: currentUser.balance,
+
+  const currentUser = await User.findById(id_)
+    .then((data) => {
+      res.json({
+        username: data.username,
+        balance: data.balance,
+      });
+    })
+    .catch((err) => {
+      return next(err);
     });
-  } catch (err) {
-    return next(err);
-  }
 });
 
 export default router;

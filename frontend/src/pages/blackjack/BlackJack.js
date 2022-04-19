@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useUser } from "../contexts/user-context";
-import { useHistory } from "react-router-dom";
 import validUser from "../../helpers/validUser";
 import Card from "./Card";
 import "./BlackJack.css";
@@ -30,18 +29,9 @@ function Blackjack() {
   const [dealerCards, setDealerCards] = useState([]);
   const [winner, setWinner] = useState("");
 
-  // Functions
-  useEffect(() => {
-    function fixBet() {
-      if (betAmount < 0) {
-        setBetAmount(-1 * Math.trunc(betAmount));
-      } else if (betAmount > user.balance && gamestate === Gamestate.BETTING) {
-        setBetAmount(Math.trunc(user.balance));
-      }
-    }
-    fixBet();
-    return () => {};
-  }, [betAmount]);
+  function verifyBetAmount(e) {
+    setBetAmount(Math.min(Math.abs(Math.trunc(e.target.value)), user.balance));
+  }
 
   function pickCards(count) {
     const cards = [];
@@ -213,7 +203,7 @@ function Blackjack() {
             max={user.balance}
             pattern="\d+"
             value={betAmount}
-            onChange={(e) => setBetAmount(e.target.value)}
+            onChange={(e) => verifyBetAmount(e.target.value)}
             disabled={gamestate !== Gamestate.BETTING}
           />
           <Button

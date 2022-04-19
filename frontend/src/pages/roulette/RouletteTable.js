@@ -6,15 +6,14 @@ function RouletteTable(props) {
   numbers.sort((a, b) => (a.num > b.num ? 1 : -1));
   numbers.splice(0, 1);
   const items = [];
-
   for (let i = 0; i < 3; i++) {
     const innerButtons = [];
     for (let j = 0; j < 12; j++) {
-      const numIndex = i * 10 + j;
+      const numIndex = i * 12 + j;
       innerButtons.push(
         <button
           key={numbers[numIndex].num}
-          onClick={() => props.addBet(numbers[numIndex].num)}
+          onClick={() => props.addBet(numbers[numIndex].num.toString())}
           className={numbers[numIndex].color}
         >
           {numbers[numIndex].num}
@@ -27,6 +26,7 @@ function RouletteTable(props) {
       </div>
     );
   }
+
   return (
     <div
       hidden={props.spinning}
@@ -43,10 +43,18 @@ function RouletteTable(props) {
         {items}
       </div>
       <div className="extraButtons">
-        <button className="green">EVEN</button>
-        <button className="red">Red</button>
-        <button className="black">Black</button>
-        <button className="green">ODD</button>
+        <button onClick={() => props.addBet("EVEN")} className="greenN">
+          EVEN
+        </button>
+        <button onClick={() => props.addBet("RED")} className="redN">
+          Red
+        </button>
+        <button onClick={() => props.addBet("BLACK")} className="blackN">
+          Black
+        </button>
+        <button onClick={() => props.addBet("ODD")} className="greenN">
+          ODD
+        </button>
       </div>
     </div>
   );
